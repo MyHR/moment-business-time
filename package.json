@@ -24,12 +24,12 @@
     "business time",
     "business hours"
   ],
-  "dependencies": {
-    "minimatch": "^3.0.3",
-    "moment-timezone": "^0.5.13"
-  },
   "devDependencies": {
     "chai": "3.5.0",
     "mocha": "3.3.0"
+  },
+  "dependencies": {
+    "minimatch": "^3.0.4",
+    "moment-timezone": "^0.5.14"
   }
 }
