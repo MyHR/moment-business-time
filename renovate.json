@@ -1,0 +1,27 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "npmToken": "880d567d-023c-428a-b8cf-5150f0c188d4",
+  "assignees": ["cabbiepete", "aprilnixon"],
+  "timezone": "Pacific/Auckland",
+  "devDependencies": {
+    "automerge": true,
+    "automergeType": "pr"
+  },
+  "digest": {
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "packagePatterns": [
+        "lodash"
+      ],
+      "automerge": false,
+      "patch": {
+        "automerge": true,
+        "automergeType": "branch-push"
+      }
+    }    
+  ]
+}
