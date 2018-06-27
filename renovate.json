@@ -9,8 +9,8 @@
     "automergeType": "pr"
   },
   "renovateFork": true,
-  "digest": {
-    "automerge": true
+  "circleci": {
+    "enabled": false
   },
   "packageRules": [
     {
