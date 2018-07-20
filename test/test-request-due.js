@@ -36,92 +36,108 @@ describe('moment.business-hours request SLA calculations', function () {
             pacificAucklandCreatedAtWithoutOffset.isWorkingTime().should.be.true;
         });
 
-        it('should report a Pacific/Auckland time that is 5am on a Monday as not being working time', function() {
-            createdAt = '2018-05-13T17:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('should report a Pacific/Auckland time that is 7am on a Monday as not being working time', function() {
+            createdAt = '2018-05-13T19:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
             pacificAucklandCreatedAtWithoutOffset.isWorkingTime().should.be.false;
         });
 
-        it('should report a Pacific/Auckland time that is 6am on a Monday as being working time', function() {
-            createdAt = '2018-05-13T18:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('should report a Pacific/Auckland time that is 8am on a Monday as being working time', function() {
+            createdAt = '2018-05-13T20:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
             pacificAucklandCreatedAtWithoutOffset.isWorkingTime().should.be.true;          
         });
 
+        it('should report a Pacific/Auckland time that is 4:59pm on a Monday as being working time', function() {
+            createdAt = '2018-05-14T04:59:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+            var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
+
+            moment.updateLocale('en', requestSlaLocale);
+            pacificAucklandCreatedAtWithoutOffset.isWorkingTime().should.be.true;          
+        });
+
+        it('should report a Pacific/Auckland time that is 5pm on a Monday as not being working time', function() {
+            createdAt = '2018-05-14T05:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+            var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
+
+            moment.updateLocale('en', requestSlaLocale);
+            pacificAucklandCreatedAtWithoutOffset.isWorkingTime().should.be.false;          
+        });
+
     });
 
     describe('nextWorkingTime using Pacific/Auckland workingHours in locale', function() {
 
-        it('nextWorkingTime for 5am on a Monday in Pacific/Auckland time should be 6am on that Monday', function() {
-            createdAt = '2018-05-13T17:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('nextWorkingTime for 7am on a Monday in Pacific/Auckland time should be 8am on that Monday', function() {
+            createdAt = '2018-05-13T19:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-14 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-14 08:00:00.000');
         });
         
-        it('nextWorkingTime for 6am on a Monday in Pacific/Auckland time should be 6am on that Monday', function() {
-            createdAt = '2018-05-13T18:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('nextWorkingTime for 8am on a Monday in Pacific/Auckland time should be 8am on that Monday', function() {
+            createdAt = '2018-05-13T20:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-14 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-14 08:00:00.000');
         });
         
-        it('nextWorkingTime for 6pm on a Thursday in Pacific/Auckland time should be 6am on the Friday', function() {
+        it('nextWorkingTime for 6pm on a Thursday in Pacific/Auckland time should be 8am on the Friday', function() {
             createdAt = '2018-05-17T06:00:00'; // UTC Thursday morning is Thursday night for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-18 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-18 08:00:00.000');
         });
         
-        it('nextWorkingTime for 6pm on a Friday in Pacific/Auckland time should be 6am on the following Monday', function() {
+        it('nextWorkingTime for 6pm on a Friday in Pacific/Auckland time should be 8am on the following Monday', function() {
             createdAt = '2018-05-18T06:00:00'; // UTC Friday morning is Friday night for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-21 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.nextWorkingTime().format(full).should.equal('2018-05-21 08:00:00.000');
         });
 
     });
 
     describe('addWorkingTime using Pacific/Auckland workingHours in locale', function() {
 
-        it('add two working days for 6am on a Monday in Pacific/Auckland time should give 6am on Wednesday', function() {
-            createdAt = '2018-05-13T18:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('add two working days for 8am on a Monday in Pacific/Auckland time should give 8am on Wednesday', function() {
+            createdAt = '2018-05-13T20:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(2, 'days').format(full).should.equal('2018-05-16 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(2, 'days').format(full).should.equal('2018-05-16 08:00:00.000');
         });
 
-        it('add 1 working day for 6am on a Thursday in Pacific/Auckland time should give 6am on the Friday', function() {
-            createdAt = '2018-05-16T18:00:00'; // UTC Wednesday night is Thursday morning for Pacific/Auckland
+        it('add 1 working day for 8am on a Thursday in Pacific/Auckland time should give 8am on the Friday', function() {
+            createdAt = '2018-05-16T20:00:00'; // UTC Wednesday night is Thursday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(1, 'days').format(full).should.equal('2018-05-18 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(1, 'days').format(full).should.equal('2018-05-18 08:00:00.000');
         });
 
-        it('add 2 working days for 6am on a Thursday in Pacific/Auckland time should give 6am on the following Monday', function() {
-            createdAt = '2018-05-16T18:00:00'; // UTC Wednesday night is Thursday morning for Pacific/Auckland
+        it('add 2 working days for 8am on a Thursday in Pacific/Auckland time should give 8am on the following Monday', function() {
+            createdAt = '2018-05-16T20:00:00'; // UTC Wednesday night is Thursday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(2, 'days').format(full).should.equal('2018-05-21 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(2, 'days').format(full).should.equal('2018-05-21 08:00:00.000');
         });
 
-        it('add 2 working days for 6am on a Friday in Pacific/Auckland time should give 6am on the following Tuesday', function() {
-            createdAt = '2018-05-17T18:00:00'; // UTC Thursday night is Friday morning for Pacific/Auckland
+        it('add 2 working days for 8am on a Friday in Pacific/Auckland time should give 8am on the following Tuesday', function() {
+            createdAt = '2018-05-17T20:00:00'; // UTC Thursday night is Friday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
-            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(2, 'days').format(full).should.equal('2018-05-22 06:00:00.000');
+            pacificAucklandCreatedAtWithoutOffset.addWorkingTime(2, 'days').format(full).should.equal('2018-05-22 08:00:00.000');
         });
     });
 
@@ -135,8 +151,8 @@ describe('moment.business-hours request SLA calculations', function () {
             expect(pacificAucklandCreatedAtWithoutOffset.endOfWorkingDay()).to.be.null;
         });
         
-        it('endOfWorkingDay for 6am on a Monday in Pacific/Auckland time should be 5pm on that Monday', function() {
-            createdAt = '2018-05-13T18:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('endOfWorkingDay for 8am on a Monday in Pacific/Auckland time should be 5pm on that Monday', function() {
+            createdAt = '2018-05-13T20:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
             moment.updateLocale('en', requestSlaLocale);
@@ -151,7 +167,7 @@ describe('moment.business-hours request SLA calculations', function () {
             pacificAucklandCreatedAtWithoutOffset.endOfWorkingDay().format(full).should.equal('2018-05-17 17:00:00.000');
         });
         
-        it('nextWorkingTime for 3pm on a Friday in Pacific/Auckland time should be 5pm on that Friday', function() {
+        it('endOfWorkingDay for 3pm on a Friday in Pacific/Auckland time should be 5pm on that Friday', function() {
             createdAt = '2018-05-18T03:00:00'; // UTC Friday morning is Friday night for Pacific/Auckland
             var pacificAucklandCreatedAtWithoutOffset = moment(createdAt).addPacificAucklandUTCOffsetToDate();
 
@@ -195,24 +211,24 @@ describe('moment.business-hours request SLA calculations', function () {
 
     describe('requestDue using Pacific/Auckland workingHours in locale', function() {
         
-        it('requestDue for a request made at 5am on a Monday should be 5pm on the Tuesday', function() {
-            createdAt = '2018-05-13T17:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('requestDue for a request made at 7am on a Monday should be 5pm on the Tuesday', function() {
+            createdAt = '2018-05-13T19:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
             requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-15 05:00:00.000');
         });
 
-        it('requestDue for a request made at one minute before 6am on a Monday should be 5pm on the Tuesday', function() {
-            createdAt = '2018-05-13T17:59:59'; // UTC Sunday night is Monday morning for Pacific/Auckland
+        it('requestDue for a request made at one second before 8am on a Monday should be 5pm on the Tuesday because it was requested outside business hours', function() {
+            createdAt = '2018-05-13T19:59:59'; // UTC Sunday night is Monday morning for Pacific/Auckland
             requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-15 05:00:00.000');
         });
 
-        it('requestDue for a request made at 6am on a Monday should be 5pm on the Wednesday', function() {
-            createdAt = '2018-05-13T18:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
-            requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-16 05:00:00.000');
+        it('requestDue for a request made at 8am on a Monday should be 8am on the Wednesday because it requested within business hours', function() {
+            createdAt = '2018-05-13T20:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+            requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-15 20:00:00.000');
         });
 
-        it('requestDue for a request made at 12pm on a Monday should be 5pm on the Wednesday', function() {
+        it('requestDue for a request made at 12pm on a Monday should be 12pm on the Wednesday', function() {
             createdAt = '2018-05-14T00:00:00';
-            requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-16 05:00:00.000');
+            requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-16 00:00:00.000');
         });
 
         it('requestDue for a request made at 9pm on a Monday should be 5pm on the Wednesday', function() {
@@ -225,18 +241,18 @@ describe('moment.business-hours request SLA calculations', function () {
             requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-18 05:00:00.000');
         });
 
-        it('requestDue for a request made at 5am on a Thursay should be 5pm on the Friday', function() {
-            createdAt = '2018-05-16T17:00:00';
+        it('requestDue for a request made at 7am on a Thursay should be 5pm on the Friday', function() {
+            createdAt = '2018-05-16T19:00:00';
             requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-18 05:00:00.000');
         });
 
-        it('requestDue for a request made at 6am on a Thursay should be 5pm on the following Monday', function() {
-            createdAt = '2018-05-16T18:00:00';
-            requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-21 05:00:00.000');
+        it('requestDue for a request made at 8am on a Thursay should be 8am on the following Monday', function() {
+            createdAt = '2018-05-16T20:00:00';
+            requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-05-20 20:00:00.000');
         });
 
-        it('requestDue for a request made at 7am on NYE should be 5pm on Thursday 4th January', function() {
-            createdAt = '2017-12-30T18:00:00'; //UTC time so equivalent to 2017-12-31 07:00 in Pacific/Auckland time
+        it('requestDue for a request made at 8am on NYE (a Sunday) should be 5pm on Thursday 4th January', function() {
+            createdAt = '2017-12-30T19:00:00'; //UTC time so equivalent to 2017-12-31 08:00 in Pacific/Auckland time
             requestDue(moment(createdAt, moment.ISO_8601), 2, holidays).format(full).should.equal('2018-01-04 05:00:00.000');
         });
 
