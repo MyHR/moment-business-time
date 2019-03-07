@@ -1,4 +1,3 @@
 
-* __Added readme for publishing a new version of this package__ 
-* __myhr/issues#935 MyHR business hours now start at 8am instead of 6am__ 
-* __Move to circleci tag images__
+* __Extra error log info to assist diagnosing &#39;duration must be defined&#39; error__ 
+* __Update dependency chai to v4.2.0__ 
