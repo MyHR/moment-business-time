@@ -25,12 +25,12 @@
     "business hours"
   ],
   "dependencies": {
-    "lodash": "^4.17.19",
-    "minimatch": "^3.0.4",
-    "moment-timezone": "^0.5.31"
+    "lodash": "4.17.19",
+    "minimatch": "3.0.4",
+    "moment-timezone": "0.5.31"
   },
   "devDependencies": {
     "chai": "4.2.0",
-    "mocha": "8.1.1"
+    "mocha": "6.2.2"
   }
 }
