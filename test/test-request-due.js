@@ -210,7 +210,7 @@ describe('moment.business-hours request SLA calculations', function () {
     });
 
     // @TODO These tests don't work when the createdAt date I am working with is in NZST and I am running the tests during NZDT
-    //       due to the statis nature of the addPacificAucklandUTCOffsetToDate and 
+    //       due to the static nature of the addPacificAucklandUTCOffsetToDate function 
     describe('requestDue in 2 days using Pacific/Auckland workingHours in locale', function() {
         
         var sla = '2 days';
