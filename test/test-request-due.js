@@ -211,7 +211,7 @@ describe('moment.business-hours request SLA calculations', function () {
 
     // @TODO These tests don't work when the createdAt date I am working with is in NZST and I am running the tests during NZDT
     //       due to the statis nature of the addPacificAucklandUTCOffsetToDate and 
-    describe('requestDue using Pacific/Auckland workingHours in locale', function() {
+    describe('requestDue in 2 days using Pacific/Auckland workingHours in locale', function() {
         
         var sla = '2 days';
 
@@ -245,12 +245,12 @@ describe('moment.business-hours request SLA calculations', function () {
             requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-18 05:00:00.000');
         });
 
-        it('requestDue for a request made at 8am on a Thursay should be 5pm on the Friday', function() {
+        it('requestDue for a request made at 8am on a Thursday should be 5pm on the Friday', function() {
             createdAt = '2018-05-16T20:00:00';
             requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-18 05:00:00.000');
         });
 
-        it('requestDue for a request made at 9am on a Thursay should be 9am on the following Monday', function() {
+        it('requestDue for a request made at 9am on a Thursday should be 9am on the following Monday', function() {
             createdAt = '2018-05-16T21:00:00';
             requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-20 21:00:00.000');
         });
@@ -259,7 +259,55 @@ describe('moment.business-hours request SLA calculations', function () {
             createdAt = '2017-12-30T20:00:00'; //UTC time so equivalent to 2017-12-31 09:00 in Pacific/Auckland time
             requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-01-04 04:00:00.000');
         });
-
     });
 
+    describe('requestDue in 4 working hours using Pacific/Auckland workingHours in locale', function() {
+        
+        var sla = '4 hours';
+
+        it('requestDue for a request made at 7am on a Monday should be 1pm on the Monday', function() {
+            createdAt = '2018-05-13T19:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-14 01:00:00.000');
+        });
+
+        it('requestDue for a request made at one second before 9am on a Monday should be 1pm on the Monday', function() {
+            createdAt = '2018-05-13T20:59:59'; // UTC Sunday night is Monday morning for Pacific/Auckland
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-14 01:00:00.000');
+        });
+
+        it('requestDue for a request made at 9am on a Monday should be 1pm on the Monday', function() {
+            createdAt = '2018-05-13T21:00:00'; // UTC Sunday night is Monday morning for Pacific/Auckland
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-14 01:00:00.000');
+        });
+
+        it('requestDue for a request made at 12pm on a Monday should be 4pm on the Monday', function() {
+            createdAt = '2018-05-14T00:00:00';
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-14 04:00:00.000');
+        });
+
+        it('requestDue for a request made at 9pm on a Monday should be 1pm on the Tuesday', function() {
+            createdAt = '2018-05-14T09:00:00';
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-15 01:00:00.000');
+        });
+
+        it('requestDue for a request made at 9pm on a Wednesday should be 1pm on the Thursday', function() {
+            createdAt = '2018-05-16T09:00:00';
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-17 01:00:00.000');
+        });
+
+        it('requestDue for a request made at 8am on a Thursday should be 1pm on the Thursday', function() {
+            createdAt = '2018-05-16T20:00:00';
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-17 01:00:00.000');
+        });
+
+        it('requestDue for a request made at 4pm on a Friday should be 12pm on the following Monday', function() {
+            createdAt = '2018-05-18T04:00:00';
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-05-21 00:00:00.000');
+        });
+
+        it('requestDue for a request made at 9am on NYE (a Sunday) should be 1pm on Wednesday 3rd January', function() {
+            createdAt = '2017-12-30T20:00:00'; //UTC time so equivalent to 2017-12-31 09:00 in Pacific/Auckland time
+            requestDue(moment(createdAt, moment.ISO_8601), sla, holidays).format(full).should.equal('2018-01-03 00:00:00.000');
+        });
+    });
 });
